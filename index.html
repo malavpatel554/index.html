@@ -62,6 +62,22 @@
       padding: 15px;
       font-size: 15px;
     }
+
+    /* Character Styling */
+    .character {
+      position: fixed;
+      height: 180px;
+      opacity: 0.9;
+      z-index: 0;
+    }
+    .gojo {
+      left: 20px;
+      bottom: 20px;
+    }
+    .sukuna {
+      right: 20px;
+      bottom: 20px;
+    }
   </style>
 </head>
 <body>
@@ -78,6 +94,10 @@
   </div>
 
   <div class="output" id="wordOutput">Words will appear here...</div>
+
+  <!-- Characters (non-interactive) -->
+  <img src="https://i.ibb.co/g9Lwh9y/gojo-clean.png" class="character gojo" alt="Gojo">
+  <img src="https://i.ibb.co/fkSHM3d/sukuna-citypng.png" class="character sukuna" alt="Sukuna">
 
   <script>
     const words = [
