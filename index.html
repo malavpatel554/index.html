@@ -2,113 +2,153 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Random Word Generator</title>
+  <title>Gojo vs Sukuna - Anime Generator</title>
   <style>
     body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      padding: 40px;
-      background: linear-gradient(to right, #a1c4fd, #c2e9fb, #d4fc79, #96e6a1);
-      background-size: 400% 400%;
-      animation: gradientMove 15s ease infinite;
-      color: #333;
-      text-align: center;
-    }
-
-    @keyframes gradientMove {
-      0% { background-position: 0% 50%; }
-      50% { background-position: 100% 50%; }
-      100% { background-position: 0% 50%; }
-    }
-
-    #instruction {
-      background-color: rgba(255, 255, 255, 0.85);
-      border-radius: 15px;
+      margin: 0;
       padding: 20px;
-      margin-bottom: 30px;
-      display: inline-block;
-      max-width: 600px;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: radial-gradient(circle at center, #0f0f0f, #1f1f1f);
+      color: #fff;
+      text-align: center;
+      overflow-x: hidden;
     }
 
-    #instruction img {
-      height: 80px;
-      vertical-align: middle;
-      margin-right: 15px;
+    h1 {
+      font-size: 2em;
+      margin-bottom: 10px;
     }
 
-    input, button {
-      padding: 10px;
-      font-size: 16px;
-      margin: 5px;
-      border: none;
-      border-radius: 5px;
+    .battle-stage {
+      position: relative;
+      height: 300px;
+      margin: 30px auto;
+      max-width: 800px;
+      border: 2px solid #444;
+      background-color: #111;
+      border-radius: 12px;
+      overflow: hidden;
+    }
+
+    .character {
+      position: absolute;
+      bottom: 0;
+      height: 280px;
+      transition: all 1s ease-in-out;
+    }
+
+    .gojo {
+      left: -200px;
+    }
+
+    .gojo.enter {
+      left: 20px;
+      animation: glow 2s infinite alternate;
+    }
+
+    .sukuna {
+      right: 10px;
+      animation: float 2s ease-in-out infinite alternate;
+    }
+
+    @keyframes glow {
+      0% { filter: drop-shadow(0 0 5px #00ffff); }
+      100% { filter: drop-shadow(0 0 20px #00ffff); }
+    }
+
+    @keyframes float {
+      0% { transform: translateY(0); }
+      100% { transform: translateY(-10px); }
+    }
+
+    .quote-box {
+      margin-top: 20px;
+      padding: 15px;
+      background: rgba(255,255,255,0.1);
+      border-radius: 10px;
+      min-height: 60px;
     }
 
     button {
       background-color: #4caf50;
       color: white;
+      padding: 10px 20px;
+      margin: 10px;
+      font-size: 16px;
+      border: none;
+      border-radius: 5px;
       cursor: pointer;
     }
 
     button:hover {
-      background-color: #45a049;
+      background-color: #388e3c;
     }
 
-    #output {
-      margin-top: 20px;
-      font-size: 18px;
-      padding: 10px;
-      background-color: rgba(255, 255, 255, 0.8);
-      border-radius: 5px;
+    .controls {
+      margin-top: 10px;
     }
   </style>
 </head>
 <body>
+  <h1>Gojo vs Sukuna ⚔️</h1>
 
-  <div id="instruction">
-    <img src="https://cdn-icons-png.flaticon.com/512/1864/1864514.png" alt="Monkey Icon">
-    <strong>Hello, I’m Momo the Monkey!</strong><br>
-    Enter a number between <strong>1 and 50</strong> in the box below and click <em>Generate</em> or hit <strong>Enter</strong> to get random words!
+  <div class="battle-stage">
+    <img src="https://i.ibb.co/g9Lwh9y/gojo-clean.png" class="character gojo" id="gojo" alt="Gojo">
+    <img src="https://i.ibb.co/fkSHM3d/sukuna-citypng.png" class="character sukuna" alt="Sukuna">
   </div>
 
-  <h2>🎲 Random Word Generator</h2>
+  <button onclick="startBattle()">Start Battle</button>
+  <button onclick="stopBattle()">Stop Battle</button>
+  <button onclick="generateQuote()">💬 Generate Anime Quote</button>
 
-  <label for="wordCount">Number of words:</label>
-  <input type="number" id="wordCount" min="1" max="50" />
-  <button onclick="generateWords()">Generate</button>
+  <div class="controls">
+    <label for="volumeControl">Music Volume:</label>
+    <input type="range" id="volumeControl" min="0" max="1" step="0.01" value="1">
+  </div>
 
-  <div id="output"></div>
+  <div class="quote-box" id="quoteBox">Click above to hear from Gojo or Sukuna.</div>
+
+  <!-- Background Music -->
+  <audio id="bgMusic" src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" loop></audio>
+  <audio id="gojoVoice" src="https://files.catbox.moe/3ev5xg.mp3"></audio>
 
   <script>
-    const wordList = [
-      "apple", "banana", "carrot", "dog", "elephant", "forest", "grape",
-      "house", "island", "jungle", "kite", "lemon", "mountain", "notebook",
-      "orange", "parrot", "queen", "river", "sun", "tree", "umbrella", "village",
-      "whale", "xylophone", "yogurt", "zebra", "cloud", "dream", "energy", "flame",
-      "galaxy", "honey", "ice", "jewel", "king", "love", "moon", "night", "ocean",
-      "peace", "quiet", "rain", "star", "travel", "unity", "victory", "wind", "xenon",
-      "yawn", "zen"
+    const gojo = document.getElementById("gojo");
+    const bgMusic = document.getElementById("bgMusic");
+    const gojoVoice = document.getElementById("gojoVoice");
+    const volumeControl = document.getElementById("volumeControl");
+
+    const quotes = [
+      "Limitless Cursed Technique! - Gojo",
+      "I'll kill you and laugh while doing it. - Sukuna",
+      "You can’t defeat me. - Gojo",
+      "You're just a pawn. - Sukuna",
+      "Throughout heaven and earth, I alone am the honored one. - Gojo",
+      "Bow before the King of Curses! - Sukuna"
     ];
 
-    function generateWords() {
-      const count = parseInt(document.getElementById("wordCount").value);
-      const outputDiv = document.getElementById("output");
-
-      if (isNaN(count) || count < 1 || count > 50) {
-        outputDiv.innerHTML = "<span style='color:red;'>Please enter a valid number between 1 and 50.</span>";
-        return;
-      }
-
-      const shuffled = wordList.sort(() => 0.5 - Math.random());
-      const selected = shuffled.slice(0, count);
-      outputDiv.textContent = selected.join(" ");
+    function startBattle() {
+      gojo.classList.add("enter");
+      bgMusic.play();
+      gojoVoice.play();
     }
 
-    document.getElementById("wordCount").addEventListener("keydown", function(event) {
-      if (event.key === "Enter") {
-        generateWords();
-      }
+    function stopBattle() {
+      gojo.classList.remove("enter");
+      bgMusic.pause();
+      bgMusic.currentTime = 0;
+      gojoVoice.pause();
+      gojoVoice.currentTime = 0;
+    }
+
+    function generateQuote() {
+      const quote = quotes[Math.floor(Math.random() * quotes.length)];
+      document.getElementById("quoteBox").innerText = quote;
+    }
+
+    volumeControl.addEventListener("input", () => {
+      bgMusic.volume = volumeControl.value;
     });
   </script>
-
 </body>
 </html>
