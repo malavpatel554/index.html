@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Random Word Generator + Anime Style</title>
+  <title>Random Word Generator - Jungle Edition</title>
   <style>
     html, body {
       height: 100%;
@@ -12,15 +12,19 @@
 
     body {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: linear-gradient(135deg, #0f0f0f, #1f1f1f);
-      background-size: 400% 400%;
-      animation: gradientFlow 12s ease infinite;
+      background: linear-gradient(270deg, #ff0000, #00ff00, #0000ff);
+      background-size: 600% 600%;
+      animation: gradientRGB 15s ease infinite;
       color: #fff;
       text-align: center;
       padding: 20px;
+      background-image: url('https://images.unsplash.com/photo-1552083375-1447ce886485?auto=format&fit=crop&w=1950&q=80');
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-position: center;
     }
 
-    @keyframes gradientFlow {
+    @keyframes gradientRGB {
       0% { background-position: 0% 50%; }
       50% { background-position: 100% 50%; }
       100% { background-position: 0% 50%; }
@@ -29,6 +33,9 @@
     h1 {
       font-size: 2em;
       margin-bottom: 10px;
+      background: rgba(0, 0, 0, 0.6);
+      padding: 10px;
+      border-radius: 10px;
     }
 
     .generator {
@@ -62,7 +69,7 @@
     .output {
       margin-top: 20px;
       padding: 15px;
-      background: rgba(255,255,255,0.05);
+      background: rgba(0,0,0,0.5);
       border-radius: 10px;
       min-height: 60px;
       font-size: 18px;
@@ -70,56 +77,40 @@
 
     .instructions {
       margin-top: 30px;
-      background: rgba(255,255,255,0.05);
+      background: rgba(0,0,0,0.5);
       border-radius: 10px;
       padding: 15px;
       font-size: 15px;
     }
-
-    /* Character Styling */
-    .character {
-      position: fixed;
-      height: 180px;
-      opacity: 0.9;
-      z-index: 0;
-      pointer-events: none;
-    }
-    .gojo {
-      left: 20px;
-      bottom: 20px;
-    }
-    .sukuna {
-      right: 20px;
-      bottom: 20px;
-    }
   </style>
 </head>
 <body>
-  <h1>🐵 Monkey's Random Word Generator 🐶</h1>
+  <h1>🌴 Jungle Random Word Generator 🐾</h1>
   <div class="instructions">
-    <p>Hi! I'm Monkey 🐒 and this is my buddy Dog 🐶.<br>
-    Type a number between 1 and 50 in the box below.<br>
-    Hit Enter or click the button and we'll give you that many random words!</p>
+    <p>Welcome to the Jungle! 🦁🐘🦜<br>
+    Enter a number between 1 and 50 to generate that many wild words.<br>
+    Press Enter or click the button to start your adventure!</p>
   </div>
 
   <div class="generator">
     <input type="number" id="wordCount" min="1" max="50" placeholder="5">
     <button onclick="generateWords()">🎲 Generate Words</button>
+    <button onclick="copyToClipboard()">📋 Copy Words</button>
   </div>
 
   <div class="output" id="wordOutput">Words will appear here...</div>
 
-  <!-- Characters (non-interactive) -->
-  <img src="https://i.ibb.co/g9Lwh9y/gojo-clean.png" class="character gojo" alt="Gojo">
-  <img src="https://i.ibb.co/fkSHM3d/sukuna-citypng.png" class="character sukuna" alt="Sukuna">
-
   <script>
     const words = [
-      "tree", "ocean", "cloud", "book", "sun", "dream", "code", "storm", "fire", "rock",
-      "light", "mouse", "ghost", "river", "wind", "smile", "star", "heart", "sky", "path",
-      "game", "fruit", "idea", "power", "house", "moon", "earth", "bird", "flower", "snow",
-      "wave", "sound", "space", "dust", "gold", "voice", "lightning", "echo", "fog", "field",
-      "stone", "glass", "map", "circle", "time", "gate", "flame", "note", "song", "truth"
+      "🌳 tree", "🌊 ocean", "☁️ cloud", "📖 book", "☀️ sun", "💤 dream", "💻 code", "⛈️ storm", "🔥 fire", "🪨 rock",
+      "💡 light", "🖱️ mouse", "👻 ghost", "🏞️ river", "💨 wind", "😊 smile", "⭐ star", "❤️ heart", "🌌 sky", "🛤️ path",
+      "🎮 game", "🍎 fruit", "💭 idea", "⚡ power", "🏠 house", "🌙 moon", "🌍 earth", "🐦 bird", "🌸 flower", "❄️ snow",
+      "🌊 wave", "🔊 sound", "🚀 space", "🌫️ dust", "🥇 gold", "🎤 voice", "🌩️ lightning", "🔁 echo", "🌁 fog", "🌾 field",
+      "🪨 stone", "🔍 glass", "🗺️ map", "⭕ circle", "⏳ time", "🚪 gate", "🔥 flame", "📝 note", "🎵 song", "🧠 truth",
+      "🌴 jungle", "🐅 tiger", "🍌 banana", "🐒 monkey", "🐆 panther", "🦁 lion", "🦜 toucan", "🐘 elephant", "🐍 python", "🐆 jaguar",
+      "🌱 roots", "🌿 canopy", "🪴 vines", "🍃 leaves", "💧 puddle", "🎋 bamboo", "👣 tribe", "🦏 rhino", "🌧️ rain", "🦗 cricket",
+      "🐵 chimp", "🦎 lizard", "📚 junglebook", "🥭 mango", "🪵 mud", "⚡ thunder", "🏕️ shelter", "🐛 insect", "🦜 parrot", "🌿 herb",
+      "🚶 trail", "🐺 howl", "🐞 beetle", "🍇 grapevine", "🦴 claw", "🌾 stalk", "🌳 bush", "🐯 growl", "🐛 crawl", "🍯 nectar"
     ];
 
     function generateWords() {
@@ -129,10 +120,17 @@
         const randomWord = words[Math.floor(Math.random() * words.length)];
         output.push(randomWord);
       }
-      document.getElementById("wordOutput").innerText = output.join(", ");
+      document.getElementById("wordOutput").innerHTML = output.join("<br>");
     }
 
-    // Allow Enter key
+    function copyToClipboard() {
+      const outputText = document.getElementById("wordOutput").innerText;
+      if (!outputText || outputText.includes("Words will appear here")) return;
+      navigator.clipboard.writeText(outputText)
+        .then(() => alert("Copied to clipboard!"))
+        .catch(err => alert("Failed to copy: " + err));
+    }
+
     document.getElementById("wordCount").addEventListener("keypress", function(e) {
       if (e.key === "Enter") {
         generateWords();
