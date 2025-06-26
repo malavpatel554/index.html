@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Random Word Generator</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 40px;
+      background: linear-gradient(to right, #a1c4fd, #c2e9fb, #d4fc79, #96e6a1);
+      background-size: 400% 400%;
+      animation: gradientMove 15s ease infinite;
+      color: #333;
+    }
+
+    @keyframes gradientMove {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    input, button {
+      padding: 10px;
+      font-size: 16px;
+      margin-right: 10px;
+      border: none;
+      border-radius: 5px;
+    }
+
+    button {
+      background-color: #4caf50;
+      color: white;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #45a049;
+    }
+
+    #output {
+      margin-top: 20px;
+      font-size: 18px;
+      padding: 10px;
+      background-color: rgba(255, 255, 255, 0.8);
+      border-radius: 5px;
+    }
+  </style>
+</head>
+<body>
+
+  <h2>🎲 Random Word Generator</h2>
+
+  <label for="wordCount">Enter number of words (1-50): </label>
+  <input type="number" id="wordCount" min="1" max="50" />
+  <button onclick="generateWords()">Generate</button>
+
+  <div id="output"></div>
+
+  <script>
+    const wordList = [
+      "apple", "banana", "carrot", "dog", "elephant", "forest", "grape",
+      "house", "island", "jungle", "kite", "lemon", "mountain", "notebook",
+      "orange", "parrot", "queen", "river", "sun", "tree", "umbrella", "village",
+      "whale", "xylophone", "yogurt", "zebra", "cloud", "dream", "energy", "flame",
+      "galaxy", "honey", "ice", "jewel", "king", "love", "moon", "night", "ocean",
+      "peace", "quiet", "rain", "star", "travel", "unity", "victory", "wind", "xenon",
+      "yawn", "zen"
+    ];
+
+    function generateWords() {
+      const count = parseInt(document.getElementById("wordCount").value);
+      const outputDiv = document.getElementById("output");
+
+      if (isNaN(count) || count < 1 || count > 50) {
+        outputDiv.innerHTML = "<span style='color:red;'>Please enter a valid number between 1 and 50.</span>";
+        return;
+      }
+
+      const shuffled = wordList.sort(() => 0.5 - Math.random());
+      const selected = shuffled.slice(0, count);
+      outputDiv.textContent = selected.join(" ");
+    }
+
+    // ENTER key handler
+    document.getElementById("wordCount").addEventListener("keydown", function(event) {
+      if (event.key === "Enter") {
+        generateWords();
+      }
+    });
+  </script>
+
+</body>
+</html>
