@@ -4,13 +4,26 @@
   <meta charset="UTF-8">
   <title>Random Word Generator + Anime Style</title>
   <style>
-    body {
+    html, body {
+      height: 100%;
       margin: 0;
-      padding: 20px;
+      padding: 0;
+    }
+
+    body {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       background: linear-gradient(135deg, #0f0f0f, #1f1f1f);
+      background-size: 400% 400%;
+      animation: gradientFlow 12s ease infinite;
       color: #fff;
       text-align: center;
+      padding: 20px;
+    }
+
+    @keyframes gradientFlow {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
     }
 
     h1 {
@@ -69,6 +82,7 @@
       height: 180px;
       opacity: 0.9;
       z-index: 0;
+      pointer-events: none;
     }
     .gojo {
       left: 20px;
